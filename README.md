@@ -15,5 +15,5 @@ Q: Is sycpl heavy?
 A: For now its not heavy, but an upcoming update might change the size of the programming language
 
 # Credits
-Head developer: [LastCleanShirt][https://github.com/LastCleanShirt]
-Syntax Designer: [LastCleanShirt][https://github.com/LastCleanShirt]
+Head developer: [LastCleanShirt](https://github.com/LastCleanShirt)
+Syntax Designer: [LastCleanShirt](https://github.com/LastCleanShirt)
