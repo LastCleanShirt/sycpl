@@ -34,11 +34,12 @@ INT       = "0123456789"
 CHAR      = string.ascii_letters
 
 # Separator
-SPR             = "!#$%&\'*+,-./:;<=>?@\\^_`|~{}()[]\"\'"
+SPR             = "!#$%&\'*+,-./:;<=>?@\\^_`|~{}()[]\"\'\n"
 SQR_BRACKETS    = "[]"
 CURL_BRACKETS   = "{}"
 ROUND_BRACKETS  = "()"
 WHITESPACE      = "\t "
+EOF             = "\n"
 
 # Operator
 ASSIGNMENT = "="
