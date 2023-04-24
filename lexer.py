@@ -94,6 +94,8 @@ class Lexer(object):
                         self._adv()
                 else:
                     if self.cc in T.EOF:
+                        if self.instr == 1:
+                            self.bufferstr += self.cc
                         self._adv()
 
                     
