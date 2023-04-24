@@ -2,7 +2,15 @@
 Simple Yet Complicated Programming Language, a.k.a sycpl, a programming language with the sole purpose of fun.
 
 # Installation
-Unfortunately we will not specify the installation process for now.
+```
+git clone https://github.com/LastCleanShirt/sycpl
+```
+
+# Usage
+```
+cd sycpl
+./sycpl -c example.sft
+```
 
 # FAQs
 ## Q: Is sycpl fast?  
