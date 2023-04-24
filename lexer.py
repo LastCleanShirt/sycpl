@@ -1,4 +1,5 @@
-import token as T
+import tokens as T
+from tokens import Token 
 
 class Lexer(object):
     def __init__(self, data):
@@ -35,7 +36,7 @@ class Lexer(object):
 
                 else:
                     if self.buffer != "":
-                        tokens.append(self.buffer)
+                        tokens.append(Token(T.IDENTIFIER, self.buffer))
                     self.buffer = ""
                     self._adv()
             
@@ -67,7 +68,7 @@ class Lexer(object):
 
                     elif self.instr == 1 and self.qtype == "S": # Ok end of single quote string
                         self.instr = 0
-                        tokens.append(self.bufferstr)
+                        tokens.append(Token(T.STR_LTL, self.bufferstr))
                         self.qtype = ""
                         self._adv()
                         self.bufferstr = ""
@@ -84,7 +85,7 @@ class Lexer(object):
 
                     elif self.instr == 1 and self.qtype == "D":
                         self.instr = 0
-                        tokens.append(self.bufferstr)
+                        tokens.append(Token(T.STR_LTL, self.bufferstr))
                         self.qtype = ""
                         self._adv()
                         self.bufferstr = ""

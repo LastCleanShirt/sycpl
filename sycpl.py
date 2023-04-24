@@ -2,6 +2,7 @@
 from colors import *
 import interp
 import sys
+import pprint 
 
 args = sys.argv
 default_text = """usage: sycpl [file] [option] [-h | --help]
@@ -24,7 +25,8 @@ def cli(arg):
         if len(arg) > 2:
             with open(arg[2], 'r') as file:
                 run = interp.Interpreter(file.read()) 
-                print(run.Interprete())
+                pp = pprint.PrettyPrinter(indent=4)
+                pp.pprint(run.Interprete())
         else:
             print(f"{PrintError('User Error', 'File argument required')}")     
     else:
