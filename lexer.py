@@ -97,6 +97,9 @@ class Lexer(object):
                     if self.cc in T.EOF:
                         if self.instr == 1:
                             self.bufferstr += self.cc
+                        elif self.buffer != "":
+                            tokens.append(Token(T.IDENTIFIER, self.buffer))
+                            self.buffer = ""
                         self._adv()
 
                     
