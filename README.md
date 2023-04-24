@@ -13,15 +13,17 @@ cd sycpl
 ```
 
 # FAQs
-## Q: Is sycpl fast?  
-## A: No, not at all, as it was made using the slowest programming language we all know, Python.
 
-## Q: Whats the purpose of this?  
-## A: The only purpose of sycpl is to be used as a joke, and as something that you wouldn't rely on making an app
+## Q: Is sycpl fast?
+A: No, not at all. It was made using Python, which is not known for its speed.
 
-## Q: Is sycpl heavy?  
-## A: For now its not heavy, but an upcoming update might change the size of the programming language
+## Q: What's the purpose of sycpl?
+A: The only purpose of sycpl is to be used as a joke and as something that you wouldn't rely on to make an app.
+
+## Q: Is sycpl heavy?
+A: For now, it's not heavy, but an upcoming update might change the size of the programming language.
 
 # Credits
-Head developer: [LastCleanShirt](https://github.com/LastCleanShirt)  
+
+Head developer: [LastCleanShirt](https://github.com/LastCleanShirt)
 Syntax Designer: [LastCleanShirt](https://github.com/LastCleanShirt)
