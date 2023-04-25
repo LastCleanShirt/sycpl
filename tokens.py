@@ -44,5 +44,20 @@ EOF             = "\n"
 # Operator
 ASSIGNMENT = "="
 
+
+## ERROR TYPES
+STR_ERR = "<String Error>"
+CMT_ERR = "<Comment Error>"
+
+NT_ERR  = "<NOTYPE Error>"
+
 def Token(type_=NULL_LTL, val=""):
     return {"type_": type_, "value": val}
+
+## Dear future me, please read this :)
+## TODO: Adds feature to change the color of the Error through an extra argument at ReturnError()
+
+def ReturnError(type_=NT_ERR, val="", loc=""):
+    return f"""{type_}:
+{val} : {loc}
+    """

@@ -26,4 +26,5 @@ A: For now, it's not heavy, but an upcoming update might change the size of the 
 # Credits
 
 Head developer: [LastCleanShirt](https://github.com/LastCleanShirt)
+
 Syntax Designer: [LastCleanShirt](https://github.com/LastCleanShirt)
