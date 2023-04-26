@@ -116,15 +116,15 @@ class Lexer(object):
                     elif self.cc == "$":
                         # IF IT IS INSIDE OF A STRING
                         if self.instr == 1:
-                            self.instr = 0
                             self.bufferstr = ""
                             print(T.ReturnError(T.STR_ERR, "lol idiot our lexer is not allowed to do that shit on line ", f"{self.line} / {self.cpl}"))
                             self._adv()
                         elif self.incmt == 1:
                             self._adv()
                         elif self.incmt == 0: # Im too lazy to even think about it lol
-                            self.incmt == 1
                             self._adv()
+
+                        self.incmt = 1
 
                     # IND
                     # Ok jadi gua bisa aja pertama pisah2 in if statement nya jadi pilih dlu lagi state comment, string, atau apa gitu, tapi gua males soalnya itu lebih susah menurut gua, menurut gua jg lebih gampang pake mekanisme kayak gini walaupun kalau di debug jadi ribet

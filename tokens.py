@@ -1,4 +1,5 @@
 import string
+from colorama import Fore, Back, Style
 
 # Tokens
 IDENTIFIER = "<Identifier>"
@@ -51,13 +52,16 @@ CMT_ERR = "<Comment Error>"
 
 NT_ERR  = "<NOTYPE Error>"
 
+## SYS
+RESET   = Style.RESET_ALL
+
 def Token(type_=NULL_LTL, val=""):
     return {"type_": type_, "value": val}
 
 ## Dear future me, please read this :)
 ## TODO: Adds feature to change the color of the Error through an extra argument at ReturnError()
 
-def ReturnError(type_=NT_ERR, val="", loc=""):
-    return f"""{type_}:
-{val} : {loc}
+def ReturnError(type_=NT_ERR, val="", loc="", color=""):
+    return f"""{color}{type_}:
+{val} : {loc} {RESET}
     """
