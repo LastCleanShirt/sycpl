@@ -19,8 +19,16 @@ NULL_LTL = "<Null Literal>"
 CMT_SPR     = "<Comment Separator>"
 SPACE_SPR   = "<Whitespace Separator>"
 
+RBO_SPR     = "<Round Brackets Opening>"
+RBC_SPR     = "<Round Brackets Closing>"
+SBO_SPR     = "<Square Brackets Opening>"
+SBC_SPR     = "<Square Brackets Closing>"
+CBO_SPR     = "<Curl Brackets Opening>"
+CBC_SPR     = "<Curl Brackets Closing>"
+
 # Operators
-OP_ASG = "<Operator Assignment>"
+OP_ASG      = "<Operator Assignment>"
+PLS_ASG     = "<Plus Assignment>"
 
 ## Tokens shape
 # Keyword
@@ -42,10 +50,6 @@ ROUND_BRACKETS  = "()"
 WHITESPACE      = "\t "
 EOF             = "\n"
 
-# Operator
-ASSIGNMENT = "="
-
-
 ## ERROR TYPES
 STR_ERR = "<String Error>"
 CMT_ERR = "<Comment Error>"
@@ -56,12 +60,11 @@ NT_ERR  = "<NOTYPE Error>"
 RESET   = Style.RESET_ALL
 
 def Token(type_=NULL_LTL, val=""):
-    return {"type_": type_, "value": val}
+    #return {"type_": type_, "value": val}
+    return {type_: val}
 
 ## Dear future me, please read this :)
 ## TODO: Adds feature to change the color of the Error through an extra argument at ReturnError()
 
-def ReturnError(type_=NT_ERR, val="", loc="", color=""):
-    return f"""{color}{type_}:
-{val} : {loc} {RESET}
-    """
+
+

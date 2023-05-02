@@ -1,5 +1,6 @@
 import tokens as T
 from tokens import Token 
+from errors import *
 
 class Lexer(object):
     def __init__(self, data):
@@ -20,7 +21,6 @@ class Lexer(object):
     def _adv(self):
         self.pos += 1
         self.cc = self.data[self.pos] if self.pos < len(self.data) else None
-
         self.cpl += 1
 
     def _advL(self):
@@ -35,7 +35,6 @@ class Lexer(object):
 
 
         while self.cc != None:
-            
             if self.cc in T.WHITESPACE:
                 if self.instr == 1:
                    print(f'append {self.cc}')
@@ -65,6 +64,9 @@ class Lexer(object):
                     elif self.cc == "_":
                         self.buffer += self.cc
 
+
+
+
                     self._adv()
 
             elif self.cc in T.SPR:
@@ -73,58 +75,88 @@ class Lexer(object):
                         self.incmt = 0
                         self._advL()
                     elif self.instr == 1:
-                        print(T.ReturnError(T.STR_ERR, "lol idiot our lexer is not allowed to do that shit on line ", f"{self.line} + {self.cpl}"))
+                        #print(T.ReturnError(T.STR_ERR, "lol idiot our lexer is not allowed to do that shit on line ", f"{self.line} + {self.cpl}"))
+
+                        #print(SyntaxErr("SyntaxError", "you can't put comment inside of a string, its illegal!1!", f"{self.line}:{self.cpl}"))
+                        pass
                     self._adv()
+                elif self.cc in T.S_QUOTE:
+                    ## String detection mechanism
+                    ## Simple logic stuff really
+                    if self.instr == 0:
+                        self.instr = 1
+                        self.qtype = "S"
+                        self._adv()
+
+                    elif self.instr == 1 and self.qtype == "S": # Ok end of single quote string
+                        self.instr = 0
+                        tokens.append(Token(T.STR_LTL, self.bufferstr))
+                        self.qtype = ""
+                        self._adv()
+                        self.bufferstr = ""
+
+                    elif self.instr == 1 and self.qtype == "D": # This time if a there is a double quote character on a single quote string, it will append the double quote string
+                        self.bufferstr += self.cc
+                        self._adv()
+
+                elif self.cc in T.D_QUOTE:
+                    if self.instr == 0:
+                        self.instr = 1
+                        self.qtype = "D"
+                        self._adv()
+
+                    elif self.instr == 1 and self.qtype == "D":
+                        self.instr = 0
+                        tokens.append(Token(T.STR_LTL, self.bufferstr))
+                        self.qtype = ""
+                        self._adv()
+                        self.bufferstr = ""
+
+                    elif self.instr == 1 and self.qtype == "S": # Same with the line 69 but reversed
+                        self.bufferstr += self.cc
+                        self._adv()
                 else:
-                    if self.cc in T.S_QUOTE:
-                        ## String detection mechanism
-                        ## Simple logic stuff really
-                        if self.instr == 0:
-                            self.instr = 1
-                            self.qtype = "S"
-                            self._adv()
 
-                        elif self.instr == 1 and self.qtype == "S": # Ok end of single quote string
-                            self.instr = 0
-                            tokens.append(Token(T.STR_LTL, self.bufferstr))
-                            self.qtype = ""
-                            self._adv()
-                            self.bufferstr = ""
+                        # COMMENT
+                    if self.cc == "$":
+                            # IF IT IS INSIDE OF A STRING
+                            if self.instr == 1:
+                                self.bufferstr = ""
+                                print(SyntaxErr("SyntaxError", "you can't put comment inside of a string, its illegal!1!", f"{self.line}:{self.cpl}"))
+                                #self._adv()
 
-                        elif self.instr == 1 and self.qtype == "D": # This time if a there is a double quote character on a single quote string, it will append the double quote string
-                            self.bufferstr += self.cc
-                            self._adv()
+                                break
+                            elif self.incmt == 1:
+                                self._adv()
+                            elif self.incmt == 0: # Im too lazy to even think about it lol
+                                self._adv()
 
-                    elif self.cc in T.D_QUOTE:
-                        if self.instr == 0:
-                            self.instr = 1
-                            self.qtype = "D"
-                            self._adv()
+                            self.incmt = 1
 
-                        elif self.instr == 1 and self.qtype == "D":
-                            self.instr = 0
-                            tokens.append(Token(T.STR_LTL, self.bufferstr))
-                            self.qtype = ""
-                            self._adv()
-                            self.bufferstr = ""
+                    ## Now THIS IS Separator
+                    elif self.cc in "+":
+                        self.buffer = ""
+                        if self.buffer != "": tokens.append(Token(T.IDENTIFIER, self.buffer))
 
-                        elif self.instr == 1 and self.qtype == "S": # Same with the line 69 but reversed
-                            self.bufferstr += self.cc
-                            self._adv()
-
-                    # COMMENT
-                    elif self.cc == "$":
-                        # IF IT IS INSIDE OF A STRING
                         if self.instr == 1:
-                            self.bufferstr = ""
-                            print(T.ReturnError(T.STR_ERR, "lol idiot our lexer is not allowed to do that shit on line ", f"{self.line} / {self.cpl}"))
-                            self._adv()
-                        elif self.incmt == 1:
-                            self._adv()
-                        elif self.incmt == 0: # Im too lazy to even think about it lol
-                            self._adv()
+                            self.bufferstr += self.cc
+                        else:
+                            tokens.append(Token(T.PLS_ASG, "+"))
+                            
+                        
+                        self._adv()
 
-                        self.incmt = 1
+                    elif self.cc in T.ROUND_BRACKETS:
+                        if self.cc == "(": tokens.append(Token(T.RBO_SPR, "("))
+                        else: tokens.append(Token(T.RBC_SPR, ")"))
+
+                    elif self.cc in T.CURL_BRACKETS:
+                        if self.cc == "{": tokens.append(Token(T.CBO_SPR, "{"))
+                        else: tokens.append(Token(T.CBC_SPR, "}"))
+
+                    elif self.cc in T.SQR_BRACKETS:
+                        if self.cc == "[": tokens.append(Token(T.SBO_SPR, "["))
+                        else:  tokens.append(Token(T.SBC_SPR, "]"))
 
                     # IND
                     # Ok jadi gua bisa aja pertama pisah2 in if statement nya jadi pilih dlu lagi state comment, string, atau apa gitu, tapi gua males soalnya itu lebih susah menurut gua, menurut gua jg lebih gampang pake mekanisme kayak gini walaupun kalau di debug jadi ribet
