@@ -1,5 +1,4 @@
 import string
-from colorama import Fore, Back, Style
 
 # Tokens
 IDENTIFIER = "<Identifier>"
@@ -18,6 +17,7 @@ NULL_LTL = "<Null Literal>"
 # Separator
 CMT_SPR     = "<Comment Separator>"
 SPACE_SPR   = "<Whitespace Separator>"
+CLN_SPR     = "<Colon seperator>"
 
 RBO_SPR     = "<Round Brackets Opening>"
 RBC_SPR     = "<Round Brackets Closing>"
@@ -31,6 +31,7 @@ PLS_OP      = "<Plus operator>"
 MIN_OP      = "<Minus operator>"
 MUL_OP      = "<Multiply operator>"
 DIV_OP      = "<Divide operator>"
+EQ_OP       = "<Equal operator>"
 
 OPERATOR_TOKENS = {
     '+': PLS_OP,
@@ -65,8 +66,6 @@ CMT_ERR = "<Comment Error>"
 
 NT_ERR  = "<NOTYPE Error>"
 
-## SYS
-RESET   = Style.RESET_ALL
 
 def Token(type_=NULL_LTL, val=""):
     #return {"type_": type_, "value": val}

@@ -80,12 +80,8 @@ class Lexer(object):
                     if self.cc == "\n":
                         self.incmt = 0
                         self._advL()
-                    elif self.instr == 1:
-                        #print(T.ReturnError(T.STR_ERR, "lol idiot our lexer is not allowed to do that shit on line ", f"{self.line} + {self.cpl}"))
-
-                        #print(SyntaxErr("SyntaxError", "you can't put comment inside of a string, its illegal!1!", f"{self.line}:{self.cpl}"))
-                        pass
                     self._adv()
+
                 elif self.cc in T.S_QUOTE:
                     ## String detection mechanism
                     ## Simple logic stuff really
@@ -120,30 +116,37 @@ class Lexer(object):
 
                     elif self.instr == 1 and self.qtype == "S": # Same with the line 69 but reversed
                         self.bufferstr += self.cc
+                        self._adv()                        
+
+
+                elif self.instr == 1:
+                    self.bufferstr += self.cc
+                    self._adv()
+                    # COMMENT
+                elif self.cc == "$":
+                # IF IT IS INSIDE OF A STRING
+                    if self.instr == 1:
+                        self.bufferstr = ""
+                        print(SyntaxErr("SyntaxError", "you can't put comment inside of a string, its illegal!1!", f"{self.line}:{self.cpl}"))
+                        #self._adv()
+
+                        break
+                    elif self.incmt == 1:
                         self._adv()
+                    elif self.incmt == 0: # Im too lazy to even think about it lol
+                        self._adv()
+
+                    self.incmt = 1
                 else:
-
-                        # COMMENT
-                    if self.cc == "$":
-                            # IF IT IS INSIDE OF A STRING
-                            if self.instr == 1:
-                                self.bufferstr = ""
-                                print(SyntaxErr("SyntaxError", "you can't put comment inside of a string, its illegal!1!", f"{self.line}:{self.cpl}"))
-                                #self._adv()
-
-                                break
-                            elif self.incmt == 1:
-                                self._adv()
-                            elif self.incmt == 0: # Im too lazy to even think about it lol
-                                self._adv()
-
-                            self.incmt = 1
+                    
+                    if self.buffer != "": tokens.append(Token(T.IDENTIFIER, self.buffer)); self.buffer = ""
+                    
 
                     ## Now THIS IS Separator
                     ## TODO: Arithmathical symbol n stuff
                     ## TODO: buffer wont be seperated by symbols
                     ## WARNING: This will be complicated.
-                    elif self.cc in "+-*/":
+                    if self.cc in "+-*/":
                         operator_token = T.OPERATOR_TOKENS.get(self.cc)
                         if operator_token:
                             tokens.append(Token(operator_token, self.cc))
@@ -162,13 +165,21 @@ class Lexer(object):
                         if self.cc == "[": tokens.append(Token(T.SBO_SPR, "["))
                         else:  tokens.append(Token(T.SBC_SPR, "]"))
 
-                    # TODO: Float
+                    # NOTE: Ill probably do floats later on another release but for now lets just stay with this
                     elif self.cc == ".":
                         if self.buffer.isdigit() != "":
                             pass
+                        self._adv()
 
+                    elif self.cc == "=":
+                        tokens.append(Token(T.EQ_OP, self.cc))
+                        self._adv()
+
+                    elif self.cc == ":":
+                        tokens.append(Token(T.CLN_SPR, self.cc))
+                        self._adv()
+                    
                     # IND
-                    # Ok jadi gua bisa aja pertama pisah2 in if statement nya jadi pilih dlu lagi state comment, string, atau apa gitu, tapi gua males soalnya itu lebih susah menurut gua, menurut gua jg lebih gampang pake mekanisme kayak gini walaupun kalau di debug jadi ribet
                     elif self.cc in T.EOF:
                         if self.instr == 1:
                             self.bufferstr += self.cc

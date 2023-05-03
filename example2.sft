@@ -1,3 +1,5 @@
-123456789
+cdec variable= "This is a string in a variable"
+dec empty = null
 
-dff
+getout:variable
+getin:empty:        "Input> "
