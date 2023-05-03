@@ -11,8 +11,9 @@ class Lexer(object):
         self.buffer     = ""
         self.qtype      = ""
         self.instr      = 0
-        self.bufferstr  = ""
         self.incmt      = 0
+        self.isfloat    = 0
+        self.bufferstr  = ""
         self.tokens     = []
         self.line       = 1
         self.cpl        = 1
@@ -27,6 +28,7 @@ class Lexer(object):
         self.line   += 1
         self.cpl    =  1
 
+
     def Lex(self):
         tokens = []
 
@@ -35,6 +37,7 @@ class Lexer(object):
 
 
         while self.cc != None:
+            print(f"CC: {self.cc}, BUFF: {self.buffer}, TOK: {tokens}".replace("\n", "EOF"))
             if self.cc in T.WHITESPACE:
                 if self.instr == 1:
                    print(f'append {self.cc}')
@@ -43,8 +46,11 @@ class Lexer(object):
 
                 else:
                     if self.buffer != "":
-                        tokens.append(Token(T.IDENTIFIER, self.buffer))
-                    self.buffer = ""
+                        if self.buffer.isdigit(): 
+                            tokens.append(Token(T.INT_LTL, self.buffer))
+                        else:
+                            tokens.append(Token(T.IDENTIFIER, self.buffer))
+                        self.buffer = ""
                     self._adv()
             
             elif self.cc in T.CHAR or self.cc in T.INT or self.cc == "_":
@@ -58,7 +64,7 @@ class Lexer(object):
                     if self.cc in T.CHAR:
                         self.buffer += self.cc
 
-                    elif self.cc in T.INT:
+                    elif self.cc in T.INT: # TODO: Also try to append integers
                         self.buffer += self.cc
 
                     elif self.cc == "_":
@@ -134,16 +140,14 @@ class Lexer(object):
                             self.incmt = 1
 
                     ## Now THIS IS Separator
-                    elif self.cc in "+":
-                        self.buffer = ""
-                        if self.buffer != "": tokens.append(Token(T.IDENTIFIER, self.buffer))
+                    ## TODO: Arithmathical symbol n stuff
+                    ## TODO: buffer wont be seperated by symbols
+                    ## WARNING: This will be complicated.
+                    elif self.cc in "+-*/":
+                        operator_token = T.OPERATOR_TOKENS.get(self.cc)
+                        if operator_token:
+                            tokens.append(Token(operator_token, self.cc))
 
-                        if self.instr == 1:
-                            self.bufferstr += self.cc
-                        else:
-                            tokens.append(Token(T.PLS_ASG, "+"))
-                            
-                        
                         self._adv()
 
                     elif self.cc in T.ROUND_BRACKETS:
@@ -158,17 +162,24 @@ class Lexer(object):
                         if self.cc == "[": tokens.append(Token(T.SBO_SPR, "["))
                         else:  tokens.append(Token(T.SBC_SPR, "]"))
 
+                    # TODO: Float
+                    elif self.cc == ".":
+                        if self.buffer.isdigit() != "":
+                            pass
+
                     # IND
                     # Ok jadi gua bisa aja pertama pisah2 in if statement nya jadi pilih dlu lagi state comment, string, atau apa gitu, tapi gua males soalnya itu lebih susah menurut gua, menurut gua jg lebih gampang pake mekanisme kayak gini walaupun kalau di debug jadi ribet
-                    else:
-                        if self.cc in T.EOF:
-                            if self.instr == 1:
-                                self.bufferstr += self.cc
-                            elif self.buffer != "":
+                    elif self.cc in T.EOF:
+                        if self.instr == 1:
+                            self.bufferstr += self.cc
+                        elif self.buffer != "":
+                            if self.buffer.isdigit(): 
+                                tokens.append(Token(T.INT_LTL, self.buffer))
+                            else:
                                 tokens.append(Token(T.IDENTIFIER, self.buffer))
-                                self.buffer = ""
-                            self._adv()
-                            self._advL()
+                            self.buffer = ""
+                        self._adv()
+                        self._advL()
 
             elif self.cc in T.INT:
                 if self.instr == 1:

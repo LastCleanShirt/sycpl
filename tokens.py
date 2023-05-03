@@ -27,8 +27,17 @@ CBO_SPR     = "<Curl Brackets Opening>"
 CBC_SPR     = "<Curl Brackets Closing>"
 
 # Operators
-OP_ASG      = "<Operator Assignment>"
-PLS_ASG     = "<Plus Assignment>"
+PLS_OP      = "<Plus operator>"
+MIN_OP      = "<Minus operator>"
+MUL_OP      = "<Multiply operator>"
+DIV_OP      = "<Divide operator>"
+
+OPERATOR_TOKENS = {
+    '+': PLS_OP,
+    '-': MIN_OP,
+    '*': MUL_OP,
+    '/': DIV_OP,
+}
 
 ## Tokens shape
 # Keyword
