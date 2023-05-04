@@ -29,6 +29,18 @@ class Lexer(object):
         self.cpl    =  1
 
 
+    def _addBuff(self):
+        t = None
+        if self.buffer != "":
+            if self.buffer.isdigit():
+                t =  Token(T.INT_LTL, self.buffer)
+            else:
+                t = Token(T.IDENTIFIER, self.buffer)
+
+            
+        self.buffer = ""
+        return t
+
     def Lex(self):
         tokens = []
 
@@ -37,21 +49,15 @@ class Lexer(object):
 
 
         while self.cc != None:
-            print(f"CC: {self.cc}, BUFF: {self.buffer}, TOK: {tokens}".replace("\n", "EOF"))
+#            print(f"CC: {self.cc}, BUFF: {self.buffer}, TOK: {tokens}".replace("\n", "EOF"))
             if self.cc in T.WHITESPACE:
                 if self.instr == 1:
-                   print(f'append {self.cc}')
                    self.bufferstr += self.cc 
                    self._adv()
 
                 else:
-                    if self.buffer != "":
-                        if self.buffer.isdigit(): 
-                            tokens.append(Token(T.INT_LTL, self.buffer))
-                        else:
-                            tokens.append(Token(T.IDENTIFIER, self.buffer))
-                        self.buffer = ""
-                    self._adv()
+                    if self.buffer != "": tokens.append(self._addBuff()); self._adv()
+                    else: self._adv()
             
             elif self.cc in T.CHAR or self.cc in T.INT or self.cc == "_":
                 if self.incmt == 1:
@@ -76,6 +82,8 @@ class Lexer(object):
                     self._adv()
 
             elif self.cc in T.SPR:
+
+
                 if self.incmt == 1:
                     if self.cc == "\n":
                         self.incmt = 0
@@ -88,6 +96,7 @@ class Lexer(object):
                     if self.instr == 0:
                         self.instr = 1
                         self.qtype = "S"
+                        if self.buffer != "": tokens.append(self._addBuff())
                         self._adv()
 
                     elif self.instr == 1 and self.qtype == "S": # Ok end of single quote string
@@ -105,6 +114,7 @@ class Lexer(object):
                     if self.instr == 0:
                         self.instr = 1
                         self.qtype = "D"
+                        if self.buffer != "": tokens.append(self._addBuff())
                         self._adv()
 
                     elif self.instr == 1 and self.qtype == "D":
@@ -137,10 +147,12 @@ class Lexer(object):
                         self._adv()
 
                     self.incmt = 1
+
                 else:
                     
-                    if self.buffer != "": tokens.append(Token(T.IDENTIFIER, self.buffer)); self.buffer = ""
-                    
+#                    if self.buffer != "": tokens.append(Token(T.IDENTIFIER, self.buffer)); self.buffer = ""
+                    if self.buffer != "": tokens.append(self._addBuff())
+#                    else: self._adv()
 
                     ## Now THIS IS Separator
                     ## TODO: Arithmathical symbol n stuff
