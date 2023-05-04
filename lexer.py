@@ -28,14 +28,24 @@ class Lexer(object):
         self.line   += 1
         self.cpl    =  1
 
+    def is_float(self, string):
+        try:
+            float(string)
+            return True
+        except ValueError:
+            return False
 
     def _addBuff(self):
         t = None
         if self.buffer != "":
-            if self.buffer.isdigit():
-                t =  Token(T.INT_LTL, self.buffer)
+            if self.isfloat == 1 and self.is_float(self.buffer):
+                t = Token(T.FLT_LTL, float(self.buffer))
+
             else:
-                t = Token(T.IDENTIFIER, self.buffer)
+                if self.buffer.isdigit():
+                    t =  Token(T.INT_LTL, self.buffer)
+                else:
+                    t = Token(T.IDENTIFIER, self.buffer)
 
             
         self.buffer = ""
@@ -49,7 +59,7 @@ class Lexer(object):
 
 
         while self.cc != None:
-#            print(f"CC: {self.cc}, BUFF: {self.buffer}, TOK: {tokens}".replace("\n", "EOF"))
+            print(f"CC: {self.cc}, BUFF: {self.buffer}, TOK: {tokens}".replace("\n", "EOF"))
             if self.cc in T.WHITESPACE:
                 if self.instr == 1:
                    self.bufferstr += self.cc 
@@ -70,7 +80,7 @@ class Lexer(object):
                     if self.cc in T.CHAR:
                         self.buffer += self.cc
 
-                    elif self.cc in T.INT: # TODO: Also try to append integers
+                    elif self.cc in T.INT: # TODO: Working on floats
                         self.buffer += self.cc
 
                     elif self.cc == "_":
@@ -151,7 +161,11 @@ class Lexer(object):
                 else:
                     
 #                    if self.buffer != "": tokens.append(Token(T.IDENTIFIER, self.buffer)); self.buffer = ""
-                    if self.buffer != "": tokens.append(self._addBuff())
+                    if self.buffer != "": 
+                        if self.cc == ".":
+                            pass
+                        else:
+                            tokens.append(self._addBuff())
 #                    else: self._adv()
 
                     ## Now THIS IS Separator
@@ -179,8 +193,13 @@ class Lexer(object):
 
                     # NOTE: Ill probably do floats later on another release but for now lets just stay with this
                     elif self.cc == ".":
-                        if self.buffer.isdigit() != "":
-                            pass
+                        if self.isfloat == 0:
+                            if self.buffer.isdigit() != "":
+                                self.isfloat = 1
+                            self.buffer += self.cc
+                        else:
+                            self.isfloat == 0
+                            self.buffer += self.cc
                         self._adv()
 
                     elif self.cc == "=":
