@@ -1,14 +1,3 @@
-dec exampleString = "This is a string
-\nthat only support character symbols numbers 0-9 new lines tabs spaces, and emojis" $ this is a comment, using the symbol $
-
-dec exampleInt = 12
-dec exampleFloat = 1.993479237423947
-
-dec points = exampleInt $ I also want to add a feature where variable can have a value of another variable/points another variable
-
-dec inp = null $ I can also put a null value on any variable
-
-getout "I can print variables, string, int, float using the getout "
-comein "This is a prompt: " inp $ comein is a function to get input from user, each argument is seperated by space/tab, the first argument is prompt that will be shown when it executes, and the second argument is where the input data is saved, for this case its on variable inp
-
-
+getout:"HI"
+getin:"INPUT> ":_
+getout:"Hi"

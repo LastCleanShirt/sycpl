@@ -31,7 +31,10 @@ class Lexer(object):
     def is_float(self, string):
         try:
             float(string)
-            return True
+            if '.' in string:
+                return True
+            else:
+                return False
         except ValueError:
             return False
 
@@ -45,7 +48,12 @@ class Lexer(object):
                 if self.buffer.isdigit():
                     t =  Token(T.INT_LTL, self.buffer)
                 else:
-                    t = Token(T.IDENTIFIER, self.buffer)
+                    if self.buffer == "getout":
+                        t = Token(T.GETOUT_KWD, "getout")
+                    elif self.buffer == "getin":
+                        t = Token(T.GETIN_KWD, "getin")
+                    else:
+                        t = Token(T.IDENTIFIER, self.buffer)
 
             
         self.buffer = ""
@@ -59,7 +67,7 @@ class Lexer(object):
 
 
         while self.cc != None:
-            print(f"CC: {self.cc}, BUFF: {self.buffer}, TOK: {tokens}".replace("\n", "EOF"))
+#            print(f"CC: {self.cc}, BUFF: {self.buffer}, TOK: {tokens}".replace("\n", "EOF"))
             if self.cc in T.WHITESPACE:
                 if self.instr == 1:
                    self.bufferstr += self.cc 
@@ -183,13 +191,19 @@ class Lexer(object):
                         if self.cc == "(": tokens.append(Token(T.RBO_SPR, "("))
                         else: tokens.append(Token(T.RBC_SPR, ")"))
 
+                        self._adv()
+
                     elif self.cc in T.CURL_BRACKETS:
                         if self.cc == "{": tokens.append(Token(T.CBO_SPR, "{"))
                         else: tokens.append(Token(T.CBC_SPR, "}"))
 
+                        self._adv()
+
                     elif self.cc in T.SQR_BRACKETS:
                         if self.cc == "[": tokens.append(Token(T.SBO_SPR, "["))
                         else:  tokens.append(Token(T.SBC_SPR, "]"))
+
+                        self._adv()
 
                     # NOTE: Ill probably do floats later on another release but for now lets just stay with this
                     elif self.cc == ".":
@@ -237,4 +251,5 @@ class Lexer(object):
         self.tokens = tokens
 
     def getToken(self):
+        print(self.tokens)
         return self.tokens

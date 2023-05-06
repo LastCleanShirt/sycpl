@@ -1,1 +1,18 @@
-expr          := 
+<program> := <statement_list>
+
+<statement_list> := var_declr | const_declr | getout |  getin
+<literal> := STRING | INT | FLOAT
+
+
+var_declr := "decl" <identifier> <eq_sign> <literal>  
+              decl  variable_name     =    123 | 2.8 | "Stringsss lol"       
+
+const_declr := "cdecl" <identifier> <eq_sign> <literal>  
+              cdecl variable_name     =    123 | 2.8 | "Stringsss lol"       
+
+getout := "getout" <colon> literal | var
+getin  := "getin"  <colon> literal <colon> var # Var to store
+
+<expression> ::= <term> | <expression> <addop> <term>
+<term> ::= <factor> | <term> <mulop> <factor>
+<factor> ::= <integer> | <float> | <string> | <identifier> | "(" <expression> ")"

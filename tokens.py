@@ -4,9 +4,9 @@ import string
 IDENTIFIER = "<Identifier>"
 
 # Keywords
-DEC_KWD    = "<decl keyword>"
-GETOUT_KWD = "<getout keyword>"
-COMEIN_KWD = "<comein keyword>"
+DEC_KWD     = "<decl keyword>"
+GETOUT_KWD  = "<getout keyword>"
+GETIN_KWD   = "<getin keyword>"
 
 # Literal
 STR_LTL  = "<String Literal>"
@@ -59,6 +59,15 @@ CURL_BRACKETS   = "{}"
 ROUND_BRACKETS  = "()"
 WHITESPACE      = "\t "
 EOF             = "\n"
+
+# Math
+LPAREN          = "("
+RPAREN          = ")"
+MULTIPLY        = "*"
+DIVIDE          = "/"
+PLUS            = "+"
+MINUS           = "-"
+
 
 ## ERROR TYPES
 STR_ERR = "<String Error>"
