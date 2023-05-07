@@ -1,3 +1,5 @@
-getout:"HI"
-getin:"INPUT> ":_
-getout:"Hi"
+getout:1+4+81
+getout:"Oh god please."
+getout:1+4+81
+dec x = 1*-9
+getout:"alhamdulillah, for some reason it worked lol"

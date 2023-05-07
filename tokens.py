@@ -4,7 +4,8 @@ import string
 IDENTIFIER = "<Identifier>"
 
 # Keywords
-DEC_KWD     = "<decl keyword>"
+DEC_KWD     = "<variable declaration>"
+CDEC_KWD    = "<constant variable declaration>"
 GETOUT_KWD  = "<getout keyword>"
 GETIN_KWD   = "<getin keyword>"
 

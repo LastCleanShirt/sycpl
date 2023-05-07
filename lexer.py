@@ -52,6 +52,10 @@ class Lexer(object):
                         t = Token(T.GETOUT_KWD, "getout")
                     elif self.buffer == "getin":
                         t = Token(T.GETIN_KWD, "getin")
+                    elif self.buffer == "dec":
+                        t = Token(T.DEC_KWD, "dec")
+                    elif self.buffer == "cdec":
+                        t = Token(T.CDEC_KWD, "constant")
                     else:
                         t = Token(T.IDENTIFIER, self.buffer)
 

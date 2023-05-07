@@ -4,6 +4,8 @@ OUTPUT          = "<<OUTPUT>>"
 INPUT           = "<<INPUT>>"
 EXPR            = "<<EXPRESSION>>"
 
+MATHOP          = "<<MATHEMATICAL OPERATION>>"
+
 def Instruction(instruction=None, value=""):
     if instruction:
         return {instruction: value}
