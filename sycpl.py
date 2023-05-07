@@ -25,8 +25,8 @@ def cli(arg):
         if len(arg) > 2:
             with open(arg[2], 'r') as file:
                 run = interp.Interpreter(file.read()) 
-                pp = pprint.PrettyPrinter(indent=4)
-                pp.pprint(run.Interprete())
+                run.Interprete()
+                
         else:
             print(f"{PrintError('User Error', 'File argument required')}")     
     else:

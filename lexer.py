@@ -141,7 +141,7 @@ class Lexer(object):
 
                     elif self.instr == 1 and self.qtype == "D":
                         self.instr = 0
-                        tokens.append(Token(T.STR_LTL, self.bufferstr))
+                        tokens.append(Token(T.STR_LTL, self.bufferstr.replace("\\n", "\n")))
                         self.qtype = ""
                         self._adv()
                         self.bufferstr = ""
@@ -152,7 +152,11 @@ class Lexer(object):
 
 
                 elif self.instr == 1:
-                    self.bufferstr += self.cc
+                    if self.cc == "\\":
+                        self.bufferstr += "\\"
+                    else:
+                        self.bufferstr += self.cc
+                    
                     self._adv()
                     # COMMENT
                 elif self.cc == "$":
@@ -255,5 +259,4 @@ class Lexer(object):
         self.tokens = tokens
 
     def getToken(self):
-        print(self.tokens)
         return self.tokens
