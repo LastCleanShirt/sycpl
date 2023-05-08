@@ -39,8 +39,10 @@ class Parser:
     def _getout(self):
         if self.currentValue() == "getout" and self.currentKey(1) == T.CLN_SPR:
             self._adv(2)
-            if self.currentKey() in [T.STR_LTL, T.IDENTIFIER]:
+            if self.currentKey() == T.STR_LTL: 
                 return Instruction(I.OUTPUT, self.currentValue())
+            elif self.currentKey() == T.IDENTIFIER:
+                return Instruction(I.OUTPUT_VAR, self.currentValue())
             elif self.currentKey() in [T.FLT_LTL, T.INT_LTL]:
                 return Instruction(I.OUTPUT, self._numcalc())
             else:
@@ -74,7 +76,7 @@ class Parser:
         if self.currentKey() == T.DEC_KWD and self.currentKey(1) == T.IDENTIFIER:
             self._adv(2)
             if self.currentKey() == T.EQ_OP and self.currentKey(1) in [T.STR_LTL, T.IDENTIFIER]:
-                return Instruction(I.VAR_DECLR, self.currentValue())
+                return Instruction(I.VAR_DECLR, [self.currentValue(-2), self.currentValue()])
             elif self.currentKey() == T.EQ_OP and self.currentKey(1) in [T.INT_LTL, T.FLT_LTL]:
                 self._adv()
                 return Instruction(I.VAR_DECLR, self._numcalc())
@@ -89,10 +91,11 @@ class Parser:
     ## Constant
     def _cdeclr(self):
         if self.currentKey() == T.CDEC_KWD and self.currentKey(1) == T.IDENTIFIER:
+            self._adv(2)
 
             if self.currentKey() == T.EQ_OP and self.currentKey(1) in [T.STR_LTL, T.IDENTIFIER]:
                 self._adv()
-                return Instruction(I.CONST_DECLR, self.currentValue())
+                return Instruction(I.CONST_DECLR, [self.currentValue(-2), self.currentValue()])
             elif self.currentKey() == T.EQ_OP and self.currentKey(1) in [T.INT_LTL, T.FLT_LTL]:
                 self._adv()
                 return Instruction(I.CONST_DECLR, self._numcalc())

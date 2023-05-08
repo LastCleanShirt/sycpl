@@ -1,6 +1,7 @@
 import tokens as T
 from tokens import Token 
 from errors import *
+import re
 
 class Lexer(object):
     def __init__(self, data):
@@ -141,7 +142,7 @@ class Lexer(object):
 
                     elif self.instr == 1 and self.qtype == "D":
                         self.instr = 0
-                        tokens.append(Token(T.STR_LTL, self.bufferstr.replace("\\n", "\n")))
+                        tokens.append(Token(T.STR_LTL, re.sub(r"\\\\", r"\\", self.bufferstr)))#self.bufferstr.replace("\\n", "\n")))
                         self.qtype = ""
                         self._adv()
                         self.bufferstr = ""

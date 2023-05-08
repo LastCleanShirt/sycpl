@@ -1,2 +1,4 @@
-getout:"Oh god please.\n"
+
+cdec x = "1+1 = 4"
+getout:x
 

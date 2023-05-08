@@ -1,6 +1,7 @@
 VAR_DECLR       = "<<VARIABLE DECLARATION>>"
 CONST_DECLR     = "<<CONST DECLARATION>>"
 OUTPUT          = "<<OUTPUT>>"
+OUTPUT_VAR      = "<<OUTPUT VARIABLE>>"
 INPUT           = "<<INPUT>>"
 EXPR            = "<<EXPRESSION>>"
 
